@@ -1,49 +1,47 @@
 package ie.lyit.hotel;
+import java.util.*;
+import java.io.*;
+import javax.swing.*;
 
-public class Customer extends Person{// INHERITANCE - Customer IS-A Person
-	// Customer has name, address, & phoneNumber from Person
-	private String emailAddress;    // AND emailAddress
-	private int number;			    // AND number
+public class Customer extends Person implements Serializable
+{
+	private String emailAddress;   
+	private int number;			    
 
-	private static int nextNumber=1;// static for unique number - starts off at 1
+	private static int nextNumber=1;
 	
-	// Default Constructor
-	// Called when object is created like this ==> 
-	//   Customer cObj = new Customer();	
-	public Customer(){
-		super();			// NOTE:Don't need to call super() explicitly.
+	
+	public Customer()
+	{
+		super();			
 		emailAddress=null;
-		// Set number to static nextNumber before incrementing nextNumber
+		
 		number=nextNumber++;
 	}
 	
-	// Initialization Constructor
-	// Called when object is created like this ==>
-	// Customer cObj = new Customer("Mr","Joe","Doe","12 Hi Rd,Letterkenny",
-	//                              "0871234567","joe@hotmail.com");
+	
 	public Customer(String t, String fN, String sn, String address, 
-			        String pNo, String email){
-		// Call super class constructor - Passing parameters required by Person ONLY!
+			        String pNo, String email)
+	{
+		
 		super(t, fN, sn, address, pNo);
-		// And then initialise Customers own instance variables
+		
 		emailAddress=email;
-		// And finally set number to static nextNumber before incrementing nextNumber
+		
 		number=nextNumber++;
 	}
 
-	// OVERRIDING the Person toString() method!
-	// Calling Persons toString() method, and adding additional bits
+	//Here is my to string method
 	@Override
-	public String toString(){
+	public String toString()
+	{
 		return super.toString() + "," + emailAddress;
 	}
 
-	// equals() method
-	// ==> Called when comparing an object with another object, 
-	//     e.g. - if(c1.equals(c2))				
-	// ==> Probably sufficient to compare customer numbers as they're unique
+	//EqualsTo method
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj)
+	{
 		Customer cObject;
 		if (obj instanceof Customer)
 		   cObject = (Customer)obj;
@@ -54,15 +52,53 @@ public class Customer extends Person{// INHERITANCE - Customer IS-A Person
 	}
 
 	// set() and get() methods
-	public void setEmailAddress(String emailAddress){
+	public void setEmailAddress(String emailAddress)
+	{
 		this.emailAddress=emailAddress;
 	}
-	public String getEmailAddress(){
+	public String getEmailAddress()
+	{
 		return this.emailAddress;
 	}	
-	// You shouldn't be able to setNumber() as it is unique, 
-	// so don't provide a setNumber() method
+	
 	public int getNumber(){
 		return number;
-	}	
+	}
+	//This method reads in what the user enters
+	   public void read()
+	   {
+	      JTextField txtNumber = new JTextField();
+	      txtNumber.setText("" + this.getNumber());
+	      JTextField txtTitle = new JTextField();
+	      txtTitle.requestFocus();
+	      JTextField txtfirstName = new JTextField();
+	      JTextField txtlastName = new JTextField();
+	      JTextField txtAddress = new JTextField();
+	      JTextField txtEmailAddress = new JTextField();
+	      JTextField txtPhoneNumber = new JTextField();
+
+	      Object[] message = 
+	    	  {
+	          "Please enter the Number:", txtNumber,
+	          "Enter the Title:", txtTitle,
+	          "Enter First Name:", txtfirstName,
+	          "Enter last Name:", txtlastName,
+	          "Please enter your Email Address:", txtEmailAddress,
+	          "Please enter your Address:", txtAddress,
+	          "Enter your Phone Number:", txtPhoneNumber,
+	          };
+
+	      int option = JOptionPane.showConfirmDialog(null, message, "Enter cutomer details", JOptionPane.OK_CANCEL_OPTION);
+
+	      if (option == JOptionPane.OK_OPTION)
+	      {
+	          //Super is calling the methods from the name class
+	    	  super.name.setTitle(txtTitle.getText());
+	          super.name.setFirstName(txtfirstName.getText());
+	          super.name.setSurname(txtlastName.getText());
+	          this.address = txtAddress.getText();
+	          this.emailAddress = txtEmailAddress.getText();
+	          this.phoneNumber = txtPhoneNumber.getText();
+	      }   
+		}
 }
